@@ -1,9 +1,13 @@
-﻿---------------Контрольная работа №1-----------------
+---------------����������� ������
+---------------��������� ��������� ����������
+---------------��������� ������ 393551
+---------------������� 5
 
 -- creating the tables
+--MANAGERS
 CREATE TABLE managers
 (id INTEGER PRIMARY KEY,
-name TEXT,
+name VARCHAR(30),
 salary INTEGER CHECK (salary > 0)
 );
 
@@ -22,12 +26,22 @@ VALUES (4, 'Kate', 1400);
 INSERT INTO managers
 VALUES (5, 'Hanna', 1900);
 
+INSERT INTO managers
+VALUES (6, 'Manny', 1900);
+
+INSERT INTO managers
+VALUES (7, 'Anna', 1900);
+
+INSERT INTO managers
+VALUES (8, 'Arnold', 1900);
+
 SELECT * FROM managers;
 
+--CLIENTS
 CREATE TABLE clients
 (id INTEGER PRIMARY KEY,
-name TEXT,
-social_status TEXT,
+name VARCHAR(30),
+social_status VARCHAR(20),
 age INTEGER CHECK (age > 0)
 );
 
@@ -78,9 +92,10 @@ VALUES (15, 'Beverly Crusher', 'Chief Med.Officer', 35);
 
 SELECT * FROM clients;
 
+--VOUCHERS
 CREATE TABLE vouchers
 (id INTEGER PRIMARY KEY,
-resourt TEXT,
+resourt VARCHAR(30),
 time INTEGER CHECK (time > 0),
 voucher_cost INTEGER CHECK (voucher_cost > 0),
 trip_cost INTEGER CHECK (trip_cost > 0),
@@ -108,383 +123,187 @@ VALUES (6, 'Jupiter Valley', 200, 15000, 2000, 10);
 INSERT INTO vouchers
 VALUES (7, 'Enterprise Cruise', 99999, 1, 1, 1300);
 
---Выберите все столбцы из таблицы «Путевки»
 SELECT * FROM vouchers;
 
+--APPLICATIONS
 CREATE TABLE applications
 (id INTEGER PRIMARY KEY,
 voucher_id INTEGER REFERENCES vouchers NOT NULL,
 manager_id INTEGER REFERENCES managers NOT NULL,
 client_id INTEGER REFERENCES clients NOT NULL,
-date TEXT
+dep_date DATE
 );
 
 INSERT INTO applications
-VALUES (1, 1, 2, 1, '2016-05-12');
+VALUES (1, 1, 2, 1, '12-05-16');
 
 INSERT INTO applications
-VALUES (2, 2, 1, 2, '2016-10-13');
+VALUES (2, 2, 1, 2, '13-10-2016');
 
 INSERT INTO applications
-VALUES (3, 3, 2, 3, '2016-04-10');
+VALUES (3, 3, 2, 3, '04-10-2016');
 
 INSERT INTO applications
-VALUES (4, 4, 3, 4, '2016-12-12');
+VALUES (4, 4, 3, 4, '12-12-2016');
 
 INSERT INTO applications
-VALUES (5, 4, 3, 5, '2016-05-04');
+VALUES (5, 4, 3, 5, '04-05-2016');
 
 INSERT INTO applications
-VALUES (6, 2, 3, 5, '2016-02-23');
+VALUES (6, 2, 3, 5, '23-02-2016');
 
 INSERT INTO applications
-VALUES (7, 6, 4, 6, '2016-02-23');
+VALUES (7, 6, 4, 6, '23-02-2016');
 
 INSERT INTO applications
-VALUES (8, 6, 4, 7, '2016-02-23');
+VALUES (8, 6, 4, 7, '23-02-2016');
 
 INSERT INTO applications
-VALUES (9, 7, 5, 8, '2016-02-23');
+VALUES (9, 7, 5, 8, '23-02-2016');
 
 INSERT INTO applications
-VALUES (10, 7, 5, 9, '2016-02-23');
+VALUES (10, 7, 5, 9, '23-02-2016');
 
 INSERT INTO applications
-VALUES (11, 7, 5, 10, '2016-02-23');
+VALUES (11, 7, 5, 10, '23-02-2016');
 
 INSERT INTO applications
-VALUES (12, 7, 5, 11, '2016-02-23');
+VALUES (12, 7, 5, 11, '23-02-2016');
 
 INSERT INTO applications
-VALUES (13, 7, 5, 12, '2016-02-23');
+VALUES (13, 7, 5, 12, '23-02-2016');
 
 INSERT INTO applications
-VALUES (14, 7, 5, 13, '2016-02-23');
+VALUES (14, 7, 5, 13, '23-02-2016');
 
 INSERT INTO applications
-VALUES (15, 7, 5, 14, '2016-02-23');
+VALUES (15, 7, 5, 14, '23-02-2016');
 
 INSERT INTO applications
-VALUES (16, 7, 5, 15, '2016-02-23');
+VALUES (16, 7, 5, 15, '23-02-2016');
+
+INSERT INTO applications
+VALUES (17, 3, 6, 4, '20-08-2008');
+
+INSERT INTO applications
+VALUES (18, 6, 7, 2, '01-01-2009');
+
+INSERT INTO applications
+VALUES (19, 2, 8, 1, '01-01-2013');
+
+INSERT INTO applications
+VALUES (20, 5, 1, 4, '01-01-2010');
+
+INSERT INTO applications
+VALUES (21, 4, 1, 1, '01-01-2013');
+
+INSERT INTO applications
+VALUES (22, 3, 1, 2, '01-01-2012');
+
+INSERT INTO applications
+VALUES (23, 2, 2, 6, '01-01-2015');
+
+INSERT INTO applications
+VALUES (24, 6, 2, 5, '01-06-2015');
+
+INSERT INTO applications
+VALUES (25, 2, 4, 6, '12-01-2015');
+
+INSERT INTO applications
+VALUES (26, 5, 4, 2, '12-01-2009');
+
+INSERT INTO applications
+VALUES (27, 2, 6, 3, '22-06-2015');
+
+INSERT INTO applications
+VALUES (28, 7, 6, 2, '12-01-2016');
+
+INSERT INTO applications
+VALUES (29, 6, 6, 1, '12-01-2017');
 
 SELECT * FROM applications;
 
+-----------------------------------------------------------------------------------------------------------------------
+---------------------------�������-------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+-- 1. �������� ����� ���� ����������, � ������� �������� ����� �� ��� � � Hanna.
+SELECT name AS "Same salary as Hanna" FROM managers
+where salary IN 
+(SELECT salary FROM managers WHERE name = 'Hanna')
+AND name <> 'Hanna'
+ORDER BY name ASC;
 
---Выберите все курорты и время отдыха на них
-SELECT resourt, time FROM vouchers;
+-- 2. �������� �������� �������� � ����� ����������, � ������� �������� ���� �������.
+SELECT DISTINCT vouchers.resourt, managers.name AS "salaries above avg"
+FROM managers, vouchers, applications
+WHERE salary > (SELECT AVG(salary) FROM managers)
+AND applications.manager_id = managers.id
+AND applications.voucher_id = vouchers.id
+ORDER BY name;
 
---Посчитайте стоимость одного дня отдыха на курорте. Стоимость дороги не учитывается
-SELECT resourt, trip_cost/time AS "One day cost" FROM vouchers;
+-- 3. �������� ������ ��������, �� ������� �� ����� bosses.
+SELECT DISTINCT vouchers.resourt AS "resourts not for bosses"
+FROM vouchers, clients, applications
+WHERE applications.client_id = clients.id
+AND applications.voucher_id = vouchers.id
+AND clients.social_status <> 'boss';
 
---Отобразите список клиентов в колонке «Плательщики»
-SELECT name AS "Payers" FROM clients;
+-- 4. �������� ���������� � ��������, ������� ����������� ��������� � ��������� ������ 
+-- ��� � Mark � ���������� ������ ������ 1000 �.�.
+SELECT clients.name 
+FROM clients, managers, applications, vouchers
+WHERE applications.client_id = clients.id
+AND applications.voucher_id = vouchers.id
+AND applications.manager_id = managers.id
+AND managers.salary > (SELECT salary FROM managers WHERE name = 'Mark')
+AND vouchers.voucher_cost < 1000;
 
---Выведите имя клиента и его возраст в один столбец, разделив их дефисом
-SELECT COALESCE(name, '') || COALESCE(' - ', '') || COALESCE(age, '') as Clients FROM clients;
+-- 5. �������� ���������� � ���������� � � ��������, ������� �� ��������� ������� � ���, 
+-- ����� ��� �����a Jane (manager_id = 2).
+SELECT managers.name AS "manager", managers.salary, clients.name AS "client", clients.age, clients.social_status 
+FROM managers
+INNER JOIN applications ON applications.manager_id = managers.id
+INNER JOIN clients ON applications.client_id = clients.id
+WHERE dep_date NOT IN (SELECT dep_date FROM applications WHERE manager_id = 2)
+ORDER BY managers.name;
 
---Выберите все курорты из таблицы «Путевки», исключая повторы
-SELECT DISTINCT resourt AS "Unique resourts" FROM vouchers;
-
---the next doesn't work
---Выберите все курорты и время отдыха на них из таблицы «Путевки», чтобы ни одно значение в полях не повторялось
-SELECT DISTINCT resourt, time FROM vouchers GROUP BY time;
-
---Выберите все столбцы из таблицы «Клиенты», отсортировав результат по фамилии , а однофамильцев по социальному статусу
-SELECT name, social_status FROM clients GROUP BY name, social_status;
-
-------------------------Контрольная работа №2----------------------------
-
---Добавьте в таблицу Путевки первую запись из таблицы используя команду INSERT и не перечисляя колонки
-INSERT INTO vouchers
-VALUES(8, 'Cyprus', 10, 600, 200, 2);
-
---Добавьте в таблицу Путевки вторую запись из таблицы, перечисляя колонки
-INSERT INTO vouchers(id, resourt, time, voucher_cost, trip_cost, num_people)
-VALUES(9, 'Madagascar', 20, 1000, 100, 5);
-
---Создайте таблицу П2 по примеру таблицы Путевки.
-CREATE TABLE vouchers2
-(id INTEGER PRIMARY KEY,
-resourt TEXT,
-time INTEGER CHECK (time > 0),
-voucher_cost INTEGER CHECK (voucher_cost > 0),
-trip_cost INTEGER CHECK (trip_cost > 0),
-num_people INTEGER CHECK (num_people > 0)
-);
-INSERT INTO vouchers2
-VALUES (1, 'Turkey', 14, 1000, 200, 3);
-SELECT * from vouchers2;
-
---Удалите таблицу П2 (используя команду Drop).
-DROP TABLE vouchers2;
-
---добавьте в таблицу Путевки колонку среднее_t типа NUMERIC
-ALTER TABLE vouchers
-ADD average_t NUMERIC;
-SELECT * from vouchers;
-
-------------------------------------ИПР1.1-----------------------------
-
---Выведите всех клиентов старше 20 лет, но моложе 35
-SELECT name AS "Clients from 20 to 35"
+-- 6. �������� ������ �������� ��� ���� ����������, � ������� ����� ����� �� ��� � � 
+-- Mary (id = 1), � ������� ��������� ������� � ��� � �� �� ���.
+SELECT clients.name AS "clients", managers.name AS "managers"
 FROM clients
-WHERE age > 20 AND age < 35;
+INNER JOIN applications ON applications.client_id = clients.id 
+INNER JOIN managers ON applications.manager_id = managers.id
+WHERE managers.salary = (SELECT salary FROM managers WHERE name = 'Mary')
+AND dep_date IN (SELECT dep_date FROM applications WHERE manager_id = 1)
+AND managers.name <> 'Mary';
 
---Создайте список клиентов, которых обслуживали менеджеры Mary, Jane
-SELECT clients.name AS "Mary and Jane worked with" 
-FROM clients
-INNER JOIN applications
-ON applications.client_id = clients.id
-INNER JOIN managers
-ON managers.id = applications.manager_id
-WHERE managers.name = 'Mary' OR managers.name = 'Jane';
+-- 7. �������� ������ ��������, �� ������� �������� ������ �������� �������� (?), � ���������
+-- ������ �� ������� ����� ������ ������� ���� (��������� ������ ���������� � ������ FROM).
+SELECT resourt/*, count(client_id)*/ 
+FROM vouchers, applications
+WHERE applications.voucher_id = vouchers.id
+AND count(client_id) > (SELECT count(*) from applications)
+GROUP BY resourt
+ORDER BY count(client_id) DESC;
 
---Выберите все курорты, в названии которых присутствует «island»
-SELECT resourt AS "Island Resourts"
+--------------
+SELECT count(*), client_id from applications
+group by client_id
+order by count(*) desc, client_id;
+
+/*SELECT resourt AS "More than half have been to...", COUNT(client_id)
 FROM vouchers
-WHERE resourt LIKE ('%island%') GROUP BY resourt;
+INNER JOIN applications ON applications.voucher_id = vouchers.id
+INNER JOIN clients ON applications.client_id = clients.id
+WHERE EXISTS (SELECT resourt FROM vouchers WHERE voucher_cost > (SELECT AVG(voucher_cost) FROM vouchers))
+GROUP BY resourt
+ORDER BY COUNT(client_id) DESC, resourt;*/
 
---Выведите всех клиентов, которых менеджер Jane отправила в Bahama island
-SELECT clients.name AS "Jane's Clients to Bahama"
-FROM clients
-INNER JOIN applications
-ON applications.client_id = clients.id
-INNER JOIN managers
-ON managers.id = applications.manager_id
-INNER JOIN vouchers
-ON vouchers.id = applications.voucher_id
-WHERE vouchers.resourt = 'Bahama island' AND  managers.name = 'Jane';
-
---Выведите все возможные сочетания менеджеров и клиентов
-SELECT managers.name AS "Managers",
-clients.name AS "Clients"
-FROM managers, clients;
-
---Сделайте список клиентов обслуживаемых одним менеджером (HANNA)
-SELECT clients.name AS "Hanna's clients:"
-FROM clients
-INNER JOIN applications
-ON applications.client_id = clients.id
-INNER JOIN managers
-ON managers.id = applications.manager_id
-WHERE managers.name = 'Hanna'
-ORDER BY clients.name;
-
---Сделайте список менеджеров, отправлявших клиентов в Japan
-SELECT managers.name AS "Japan managers"
-FROM managers
-INNER JOIN applications
-ON applications.manager_id = managers.id
-INNER JOIN vouchers
-ON vouchers.id = applications.voucher_id
-WHERE vouchers.resourt = 'Japan'
-GROUP BY name;
-
---Выведите все данные из таблицы Клиенты и все данные из соответствующей ей таблицы Менеджеры
-SELECT * FROM clients, managers
-JOIN applications
-ON applications.manager_id = managers.id AND applications.client_id = clients.id;
-
---Выведите список курортов, на котором клиенты отдохнули благодаря работе менеджера Jane
-SELECT vouchers.resourt AS "Jane's resourts"
-FROM vouchers
-INNER JOIN applications
-ON applications.voucher_id = vouchers.id
-INNER join managers
-on managers.id = applications.manager_id
-where managers.name = 'Jane'
-GROUP BY resourt;
-
---Выведите даты оформления заказов для всех клиентов, не используя оператор JOIN
-SELECT date FROM applications;
-
--------------------------------ИПР2---------------------------------------------------
-
---Выведите информацию о всех клиентах, выделив название курорта заглавными буквами.
-SELECT clients.id, clients.name, clients.social_status AS "Social status", clients.age, UPPER(vouchers.resourt) AS Resourts
-FROM clients
-INNER JOIN applications
-ON applications.client_id = clients.id
-INNER JOIN vouchers
-ON vouchers.id = applications.voucher_id;
-
---Выведите имя менеджера и его зарплату, как количество полных сотен.
-SELECT name, salary/100 AS "salary in hundreds" 
-FROM managers;
-
---Выведите имена клиентов и названия курортов, для тех путевок, которые ещё не закончились.
-SELECT clients.name AS "Still on vacation:"
-, vouchers.resourt 
-FROM clients
-INNER JOIN applications
-ON applications.client_id = clients.id
-INNER JOIN vouchers
-ON vouchers.id = applications.voucher_id
-WHERE date(applications.date, '+'||vouchers.time||' days') >= date();
-
---Выведите названия курортов, дату оформления путевки и имена клиентов, указав дату и день недели их возвращения.
-SELECT vouchers.resourt, 
-       applications.date AS "departure date",
-       clients.name,
-       date(applications.date, '+'||vouchers.time||' days') AS "arrival date",
-case cast(strftime('%w', date(applications.date, '+'||vouchers.time||' days')) as integer)
-  when 0 then 'Sunday'
-  when 1 then 'Monday'
-  when 2 then 'Tuesday'
-  when 3 then 'Wednesday'
-  when 4 then 'Thursday'
-  when 5 then 'Friday'
-  else 'Saturday' 
-end AS "day of week"
-FROM applications
-INNER JOIN vouchers
-ON applications.voucher_id = vouchers.id
-INNER JOIN clients
-ON clients.id = applications.client_id;
-
---Выведите имена менеджеров, названия курортов и дату оформления заказа, отобразив число и месяц словами.
-SELECT managers.name AS Managers,
-vouchers.resourt AS Resourts,
-case cast(strftime('%m', applications.date) AS integer)
-when 1 then 'January'
-when 2 then 'February'
-when 3 then 'March'
-when 4 then 'April'
-when 5 then 'May'
-when 6 then 'June'
-when 7 then 'July'
-when 8 then 'August'
-when 9 then 'September'
-when 10 then 'October'
-when 11 then 'November'
-else 'December'
-end
-|| COALESCE(strftime(' %d', applications.date), '') AS "Month"
-FROM managers
-INNER JOIN applications
-ON managers.id = applications.manager_id
-INNER JOIN vouchers
-ON vouchers.id = applications.voucher_id;
-
---Выведите информацию о всех клиентах, заменяя пустое значение в поле «СоцСтатус» на фразу «UNKNOWN».
-INSERT INTO clients(name, age) 
-VALUES('Fred Thug', 32);
-SELECT id, name, age, 
-COALESCE(social_status,'UNKNOWN') AS "Soc.status"
-FROM clients;
-
---Выведите имена клиентов, их возраст, имя менеджера, его зарплату, дату оформления путевки и название курорта, 
---добавив к зарплате менеджеров у которых клиенты моложе 25 лет 10%.
-SELECT clients.name, clients.age, managers.name, 
-case when clients.age < 25 then managers.salary*1.1
-else managers.salary
-end AS "Managers' salary", 
-applications.date, vouchers.resourt
-FROM clients
-INNER JOIN applications
-ON applications.client_id = clients.id
-INNER JOIN vouchers
-ON applications.voucher_id = vouchers.id
-INNER JOIN managers
-ON applications.manager_id = managers.id;
-
---Создайте диаграмму популярности курортов, в качестве индикаторов используйте символ «*» (функция rpad).
-
---SQL*PLUS
---instead of SUBSTR('***********', 1, COUNT(resourt)) AS popularity would be
---rpad(' ', COUNT(resourt), '*') AS popularity  ??
-
---SQLite
-SELECT vouchers.resourt, 
-SUBSTR('***********', 1, COUNT(resourt)) AS popularity 
-FROM vouchers
-INNER JOIN applications
-ON applications.voucher_id = vouchers.id
-GROUP BY resourt;
-
---Выведите общую сумму путевок для каждого менеджера.
-SELECT managers.name, 
-COUNT(name) AS vouchers 
-FROM managers
-INNER JOIN applications
-ON applications.manager_id = managers.id
-GROUP BY name;
-
---Для определенного менеджера выведите количество клиентов, указавших свой социальный статус.
-SELECT managers.name, 
-COUNT(social_status) AS "Number of Clients with status"
-FROM managers
-INNER JOIN applications
-ON applications.manager_id = managers.id
-INNER JOIN clients
-ON applications.client_id = clients.id
-WHERE social_status IS NOT NULL
-GROUP BY managers.name;
-
--- Выведите количество клиентов фирмы.
-SELECT COUNT(name) AS "Number of clients" FROM clients;
-
---Подсчитайте среднюю стоимость дороги для всех курортов, заменяя пустые значения нолем.
-SELECT AVG(COALESCE(trip_cost, 0)) AS "Average trip cost" FROM vouchers;
-
---Выведите количество клиентов каждого менеджера.
-SELECT managers.name, COUNT(clients.name) AS "Number of Clients"
-FROM managers
-INNER JOIN applications
-ON applications.manager_id = managers.id
-INNER JOIN clients
-ON applications.client_id = clients.id
-GROUP BY managers.name;
-
---Для каждого менеджера выведите имя менеджера, имя и возраст самого младшего клиента.
-SELECT managers.name AS Managers, 
-clients.name AS "Youngest clients",
-MIN(clients.age) "age"
-FROM managers
-INNER JOIN applications
-ON applications.manager_id = managers.id
-INNER JOIN clients
-ON applications.client_id = clients.id
-GROUP BY managers.name;
-
---Выведите градацию менеджеров в зависимости от их зарплаты: от 2000 до 1850, от 1800 до 1650, от 1600 до 1200.
-SELECT name,
-case 
-when salary > 1850 then "from 1850 to 2050" 
-when salary > 1650 then "from 1650 to 1800"
-when salary > 1200 then "from 1200 to 1600"
-end AS "Salaries"
-FROM managers;
-
---Выведите название курорта и стоимость отдыха, где средний возраст отдыхающих меньше 30 лет.
-SELECT vouchers.resourt AS "Resourts for ppl <30 years",
-vouchers.voucher_cost
-FROM vouchers
-INNER JOIN applications
-ON applications.voucher_id = vouchers.id
-INNER JOIN clients
-ON applications.client_id = clients.id
-GROUP BY resourt HAVING AVG(age)<30;
-
---Для менеджера Hanna выведите список всех курортов, на которые он отправлял людей и самых старых клиентов, 
---побывавших на каждом курорте.
-SELECT vouchers.resourt, clients.name AS "Oldest Hanna's client", clients.age
-FROM vouchers
-INNER JOIN applications
-ON applications.voucher_id = vouchers.id
-INNER JOIN clients
-ON applications.client_id = clients.id
-INNER JOIN managers
-ON applications.manager_id = managers.id
-WHERE managers.name = 'Hanna'
-GROUP BY resourt HAVING MAX(age);
-
---Выведите минимальный средний возраст клиента для всех менеджеров.
-SELECT MIN(avg_age) AS "Min avg age" FROM 
-(SELECT managers.name, AVG(clients.age) AS avg_age
-FROM managers
-INNER JOIN applications
-ON applications.manager_id = managers.id
-INNER JOIN clients
-ON applications.client_id = clients.id
-GROUP BY managers.name);
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+--the BIG table
+SELECT * FROM managers
+INNER JOIN applications ON applications.manager_id = managers.id
+INNER JOIN clients ON applications.client_id = clients.id
+INNER JOIN vouchers ON applications.voucher_id = vouchers.id
+ORDER BY managers.id;
